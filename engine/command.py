@@ -1,6 +1,6 @@
 import pyttsx3
 import speech_recognition as sr
-
+import eel
 
 def speak(text):
     engine = pyttsx3.init('sapi5')
@@ -11,23 +11,29 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
 
-def takecommnad():
+@eel.expose
+def takecommand():
     r = sr.Recognizer() #variable initialised using recognizer 
     
     with sr.Microphone() as source:   # mic is used as a source to detect speech
         print('Listening...')
+        eel.DisplayMessage('listening...')
         r.pause_threshold=1
-        r.adjust_for_ambient_noise(source)
+        r.adjust_for_ambient_noise(source, duration=1)
 
-        audio=r.listen(source, 10, 6) #if listen it should listen for atleast 10s and if speaking it should capture voice for atleast 6s
+        audio=r.listen(source, timeout=5, phrase_time_limit=8) 
     try:
         print('recognizing')
-        query=r.recognize_google(audio, language='en-in') #recognize_google is standard engine of recognize
-        print(f"user said:{query}")   
-    except Exception as e:  
+        eel.DisplayMessage('recognizing...')
+        query= r.recognize_google(audio, language='en-in') #recognize_google is standard engine of recognize
+        print(f"user said:{query}")  
+        eel.DisplayMessage(query)
+        speak(query) 
+        eel.ShowHood()
+    except Exception as e: 
+        print(f"Error: {e}")
+        eel.DisplayMessage("Sorry, I didn't catch that. Please try again.")  # Handle errors 
         return ""
     return query.lower()
 
-text= takecommnad()
-
-speak(text)    
+   

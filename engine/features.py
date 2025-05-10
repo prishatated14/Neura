@@ -137,16 +137,16 @@ def findContact(query):
 def whatsApp(mobile_no, message, flag, name):
     try:
         if flag == 'message':
-            target_tab = 12
-            jarvis_message = "message send successfully to "+name
+            target_tab = 11
+            neura_message = "message send successfully to "+name
         elif flag == 'call':
             target_tab = 6
             message = ''
-            jarvis_message = "calling to "+name
+            neura_message = "calling to "+name
         else:
             target_tab = 5
             message = ''
-            jarvis_message = "starting video call with "+name
+            neura_message = "starting video call with "+name
 
         # Clean phone number (remove spaces and special chars)
         clean_number = ''.join(filter(str.isdigit, mobile_no))
@@ -170,7 +170,7 @@ def whatsApp(mobile_no, message, flag, name):
         time.sleep(0.5)
         pyautogui.press('enter')  # Single enter press is usually enough
         
-        speak(jarvis_message)
+        speak(neura_message)
         return True
         
     except Exception as e:
